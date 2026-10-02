@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Study Planner</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f4f6f8;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        input,
+        select,
+        button {
+            padding: 10px;
+            margin: 5px;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .task {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+        }
+
+        .delete {
+            background: #dc3545;
+            color: white;
+            border: none;
+        }
+
+        .update {
+            background: #007bff;
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>📚 Smart Study Planner</h1>
+
+    <form method="POST" action="/add">
+
+        <h2>Add Study Task</h2>
+
+        <input type="text" name="title" placeholder="Task title" required>
+
+        <input type="text" name="subject" placeholder="Subject" required>
+
+        <select name="difficulty">
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+        </select>
+
+        <input
+            type="number"
+            name="estimated_hours"
+            placeholder="Hours"
+            step="0.5"
+            min="0.5"
+            required
+        >
+
+        <input type="date" name="deadline" required>
+
+        <select name="priority">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+        </select>
+
+        <button type="submit">Add Task</button>
+
+    </form>
+
+
+    <h2>My Study Tasks</h2>
+
+
+    {% if tasks %}
+
+        {% for task in tasks %}
+
+            <div class="task">
+
+                <h3>{{ task[1] }}</h3>
+
+                <p><strong>Subject:</strong> {{ task[2] }}</p>
+
+                <p><strong>Difficulty:</strong> {{ task[3] }}</p>
+
+                <p><strong>Estimated Hours:</strong> {{ task[4] }}</p>
+
+                <p><strong>Deadline:</strong> {{ task[5] }}</p>
+
+                <p><strong>Priority:</strong> {{ task[6] }}</p>
+
+
+                <form
+                    method="POST"
+                    action="/update/{{ task[0] }}"
+                >
+
+                    <input
+                        type="text"
+                        name="title"
+                        value="{{ task[1] }}"
+                        required
+                    >
+
+                    <input
+                        type="text"
+                        name="subject"
+                        value="{{ task[2] }}"
+                        required
+                    >
+
+                    <select name="difficulty">
+
+                        <option
+                            value="Easy"
+                            {% if task[3] == "Easy" %}selected{% endif %}
+                        >
+                            Easy
+                        </option>
+
+                        <option
+                            value="Medium"
+                            {% if task[3] == "Medium" %}selected{% endif %}
+                        >
+                            Medium
+                        </option>
+
+                        <option
+                            value="Hard"
+                            {% if task[3] == "Hard" %}selected{% endif %}
+                        >
+                            Hard
+                        </option>
+
+                    </select>
+
+                    <input
+                        type="number"
+                        name="estimated_hours"
+                        value="{{ task[4] }}"
+                        step="0.5"
+                        min="0.5"
+                        required
+                    >
+
+                    <input
+                        type="date"
+                        name="deadline"
+                        value="{{ task[5] }}"
+                        required
+                    >
+
+                    <select name="priority">
+
+                        <option
+                            value="Low"
+                            {% if task[6] == "Low" %}selected{% endif %}
+                        >
+                            Low
+                        </option>
+
+                        <option
+                            value="Medium"
+                            {% if task[6] == "Medium" %}selected{% endif %}
+                        >
+                            Medium
+                        </option>
+
+                        <option
+                            value="High"
+                            {% if task[6] == "High" %}selected{% endif %}
+                        >
+                            High
+                        </option>
+
+                    </select>
+
+                    <button class="update" type="submit">
+                        Update
+                    </button>
+
+                </form>
+
+
+                <a href="/delete/{{ task[0] }}">
+                    <button class="delete">
+                        Delete
+                    </button>
+                </a>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No study tasks yet.</p>
+
+    {% endif %}
+
+</body>
+
+</html>
