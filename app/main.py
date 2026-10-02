@@ -1,38 +1,9 @@
-from models import StudyTask
 from task_manager import TaskManager
 
 manager = TaskManager()
 
-task1 = StudyTask(
-    "Learn SQL Joins",
-    "PostgreSQL",
-    "Easy",
-    2,
-    "2026-10-05",
-    "High"
-)
-
-task2 = StudyTask(
-    "Practice Recursion",
-    "Python",
-    "Medium",
-    3,
-    "2026-10-07",
-    "High"
-)
-
-manager.add_task(task1)
-manager.add_task(task2)
-
-print("=== ALL TASKS ===")
-
-for task in manager.get_tasks():
-    print(task)
-
-print("\n=== UPDATE TASK ===")
-
 manager.update_task(
-    0,
+    1,
     "Learn Advanced SQL Joins",
     "PostgreSQL",
     "Medium",
@@ -41,11 +12,7 @@ manager.update_task(
     "High"
 )
 
-print(manager.get_tasks()[0])
-
-print("\n=== DELETE TASK ===")
-
-manager.delete_task(1)
+print("Task updated successfully!")
 
 for task in manager.get_tasks():
     print(task)
