@@ -1,83 +1,170 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 20px;
-            background: #f4f6f8;
-        }
+<title>Study Dashboard</title>
 
-        .dashboard {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+>
 
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .number {
-            font-size: 32px;
-            font-weight: bold;
-        }
-
-        a {
-            display: inline-block;
-            margin-top: 30px;
-        }
-    </style>
 </head>
 
 <body>
 
-    <h1>📊 Study Dashboard</h1>
+<div class="container">
+    
+<header>
 
-    <div class="dashboard">
+    <div>
+        <h1>📊 Study Dashboard</h1>
+        <p>Track your study progress at a glance.</p>
+    </div>
 
-        <div class="card">
-            <h3>Total Tasks</h3>
-            <div class="number">
-                {{ statistics[0] }}
-            </div>
-        </div>
+    <nav>
+        <a href="/">
+            <button class="primary">
+                ← Tasks
+            </button>
+        </a>
 
-        <div class="card">
-            <h3>Total Study Hours</h3>
-            <div class="number">
-                {{ statistics[1] }}
-            </div>
-        </div>
+        <a href="/plan">
+            <button class="primary">
+                🧠 Smart Plan
+            </button>
+        </a>
+    </nav>
 
-        <div class="card">
-            <h3>High Priority</h3>
-            <div class="number">
-                {{ statistics[2] }}
-            </div>
-        </div>
+</header>
 
-        <div class="card">
-            <h3>Completed</h3>
-            <div class="number">
-                {{ statistics[3] }}
-            </div>
+
+<!-- Statistics -->
+
+<div class="dashboard">
+
+    <div class="dashboard-card">
+
+        <div class="dashboard-icon">📚</div>
+
+        <h3>Total Tasks</h3>
+
+        <div class="number">
+            {{ statistics[0] }}
         </div>
 
     </div>
 
-    <a href="/">← Back to Tasks</a>
+
+    <div class="dashboard-card">
+
+        <div class="dashboard-icon">⏳</div>
+
+        <h3>Pending</h3>
+
+        <div class="number">
+            {{ statistics[4] }}
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-card">
+
+        <div class="dashboard-icon">✅</div>
+
+        <h3>Completed</h3>
+
+        <div class="number">
+            {{ statistics[3] }}
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-card">
+
+        <div class="dashboard-icon">🔥</div>
+
+        <h3>High Priority</h3>
+
+        <div class="number">
+            {{ statistics[2] }}
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Study Summary -->
+
+<div class="card study-summary">
+
+    <h2>📖 Study Summary</h2>
+
+    <div class="summary-row">
+
+        <div>
+            <span>Total Study Hours</span>
+
+            <strong>
+                {{ statistics[1] }} hours
+            </strong>
+        </div>
+
+
+        <div>
+
+            <span>Completion Rate</span>
+
+            <strong>
+
+                {% if statistics[0] > 0 %}
+                    {{ ((statistics[3] / statistics[0]) * 100)|round(0) }}%
+                {% else %}
+                    0%
+                {% endif %}
+
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Quick Actions -->
+
+<div class="card">
+
+    <h2>⚡ Quick Actions</h2>
+
+    <div class="quick-actions">
+
+        <a href="/">
+            <button class="primary">
+                ➕ Add Study Task
+            </button>
+        </a>
+
+        <a href="/plan">
+            <button class="success">
+                🧠 View Smart Plan
+            </button>
+        </a>
+
+    </div>
+
+</div>
+
+</div>
 
 </body>
 

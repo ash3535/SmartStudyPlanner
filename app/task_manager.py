@@ -104,10 +104,11 @@ class TaskManager:
 
         cursor.execute("""
             SELECT
-                COUNT(*),
-                COALESCE(SUM(estimated_hours), 0),
-                COUNT(*) FILTER (WHERE priority = 'High'),
-                COUNT(*) FILTER (WHERE completed = TRUE)
+                COUNT(*) AS total_tasks,
+                COALESCE(SUM(estimated_hours), 0) AS total_hours,
+                COUNT(*) FILTER (WHERE priority = 'High') AS high_priority,
+                COUNT(*) FILTER (WHERE completed = TRUE) AS completed_tasks,
+                COUNT(*) FILTER (WHERE completed = FALSE) AS pending_tasks
             FROM study_tasks
         """)
 
