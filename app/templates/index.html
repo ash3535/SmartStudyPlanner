@@ -19,6 +19,26 @@
 
 <div class="container">
 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            <div class="messages">
+
+                {% for category, message in messages %}
+
+                    <div class="message {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    {% endwith %}
+
 <!-- Header -->
 
 <header>
@@ -69,13 +89,23 @@
             required
         >
 
-        <select name="difficulty">
+        <div class="form-field">
 
-            <option value="Easy">Easy</option>
-            <option value="Medium">Medium</option>
-            <option value="Hard">Hard</option>
+            <label for="difficulty">Difficulty</label>
 
-        </select>
+            <select name="difficulty" id="difficulty">
+
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+
+            </select>
+
+            <small>
+                Easy: Familiar topic · Medium: Needs practice · Hard: Challenging topic
+            </small>
+
+        </div>
 
         <input
             type="number"
@@ -92,13 +122,23 @@
             required
         >
 
-        <select name="priority">
+        <div class="form-field">
 
-            <option value="Low">Low Priority</option>
-            <option value="Medium">Medium Priority</option>
-            <option value="High">High Priority</option>
+            <label for="priority">Priority</label>
 
-        </select>
+            <select name="priority" id="priority">
+
+                <option value="Low">Low Priority</option>
+                <option value="Medium">Medium Priority</option>
+                <option value="High">High Priority</option>
+
+            </select>
+
+            <small>
+                Low: Can wait · Medium: Important · High: Urgent
+            </small>
+
+        </div>
 
         <button
             class="primary"

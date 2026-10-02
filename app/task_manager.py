@@ -35,7 +35,7 @@ class TaskManager:
             SELECT id, title, subject, difficulty,
                 estimated_hours, deadline, priority, completed
             FROM study_tasks
-            ORDER BY id
+            ORDER BY completed ASC, id
         """)
 
         tasks = cursor.fetchall()

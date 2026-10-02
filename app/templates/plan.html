@@ -1,89 +1,142 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Smart Study Plan</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
-            background: #f4f6f8;
-        }
+<title>Smart Study Plan</title>
 
-        .task {
-            background: white;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 10px;
-        }
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+>
 
-        a {
-            text-decoration: none;
-        }
-    </style>
 </head>
 
 <body>
 
-    <h1>🧠 Smart Study Plan</h1>
+<div class="container">
 
-    <p>
-        Tasks are automatically ordered based on
-        deadline, priority, difficulty and study time.
-    </p>
+<!-- Header -->
 
-    {% if tasks %}
+<header>
+
+    <div>
+
+        <h1>🧠 Smart Study Plan</h1>
+
+        <p>
+            Your tasks are automatically prioritized based on
+            deadline, priority, difficulty and study time.
+        </p>
+
+    </div>
+
+    <nav>
+
+        <a href="/">
+            <button class="primary">
+                ← Tasks
+            </button>
+        </a>
+
+        <a href="/dashboard">
+            <button class="primary">
+                📊 Dashboard
+            </button>
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- Plan -->
+
+{% if tasks %}
+
+    <div class="plan-list">
 
         {% for task in tasks %}
 
-            <div class="task">
+            <div class="plan-task">
 
-                <h2>
-                    {{ loop.index }}. {{ task[1] }}
-                </h2>
+                <div class="plan-number">
+                    {{ loop.index }}
+                </div>
 
-                <p>
-                    <strong>Subject:</strong>
-                    {{ task[2] }}
-                </p>
 
-                <p>
-                    <strong>Difficulty:</strong>
-                    {{ task[3] }}
-                </p>
+                <div class="plan-content">
 
-                <p>
-                    <strong>Study Time:</strong>
-                    {{ task[4] }} hours
-                </p>
+                    <div class="plan-header">
 
-                <p>
-                    <strong>Deadline:</strong>
-                    {{ task[5] }}
-                </p>
+                        <div>
 
-                <p>
-                    <strong>Priority:</strong>
-                    {{ task[6] }}
-                </p>
+                            <h2>
+                                {{ task[1] }}
+                            </h2>
+
+                            <span class="subject">
+                                {{ task[2] }}
+                            </span>
+
+                        </div>
+
+                        <span class="priority-badge priority-{{ task[6]|lower }}">
+                            {{ task[6] }} Priority
+                        </span>
+
+                    </div>
+
+
+                    <div class="plan-details">
+
+                        <span>
+                            📚 {{ task[3] }}
+                        </span>
+
+                        <span>
+                            ⏱ {{ task[4] }} hours
+                        </span>
+
+                        <span>
+                            📅 {{ task[5] }}
+                        </span>
+
+                    </div>
+
+                </div>
 
             </div>
 
         {% endfor %}
 
-    {% else %}
+    </div>
 
-        <p>No tasks available.</p>
+{% else %}
 
-    {% endif %}
+    <div class="card empty">
 
-    <a href="/">← Back to Tasks</a>
+        <h2>🎉 No pending tasks!</h2>
+
+        <p>
+            You've completed all your current study tasks.
+        </p>
+
+        <a href="/">
+            <button class="primary">
+                Back to Tasks
+            </button>
+        </a>
+
+    </div>
+
+{% endif %}
+
+</div>
 
 </body>
 
