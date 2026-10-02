@@ -46,6 +46,7 @@
     <div>
         <h1>📚 Smart Study Planner</h1>
         <p>Organize your studies. Stay on track. Reach your goals.</p>
+        <p>Welcome, <strong>{{ session["username"] }}</strong>!</p>
     </div>
 
     <nav>
@@ -61,7 +62,12 @@
                 🧠 Smart Plan
             </button>
         </a>
-
+        
+        <a href="/logout">
+            <button class="primary">
+                🔓 Logout
+            </button>
+        </a>
     </nav>
 
 </header>
