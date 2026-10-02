@@ -128,6 +128,26 @@
 
                 <p><strong>Priority:</strong> {{ task[6] }}</p>
 
+                <p>
+                    <strong>Status:</strong>
+
+                    {% if task[7] %}
+                        ✅ Completed
+                    {% else %}
+                        ⏳ Pending
+                    {% endif %}
+                </p>
+
+                <a href="/toggle/{{ task[0] }}">
+                    <button>
+                        {% if task[7] %}
+                            Mark as Pending
+                        {% else %}
+                            Mark as Completed
+                        {% endif %}
+                    </button>
+                </a>
+
 
                 <form
                     method="POST"

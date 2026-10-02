@@ -117,3 +117,18 @@ class TaskManager:
         connection.close()
 
         return statistics
+    
+    def toggle_task(self, task_id):
+        connection = get_connection()
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            UPDATE study_tasks
+            SET completed = NOT completed
+            WHERE id = %s
+        """, (task_id,))
+
+        connection.commit()
+
+        cursor.close()
+        connection.close()

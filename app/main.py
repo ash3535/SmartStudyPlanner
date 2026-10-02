@@ -92,5 +92,11 @@ def dashboard():
         statistics=statistics
     )
 
+@app.route("/toggle/<int:task_id>")
+def toggle_task(task_id):
+    manager.toggle_task(task_id)
+
+    return redirect("/")
+
 if __name__ == "__main__":
     app.run(debug=True)
