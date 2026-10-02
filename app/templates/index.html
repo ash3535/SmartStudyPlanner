@@ -1,251 +1,337 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Smart Study Planner</title>
+<title>Smart Study Planner</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 20px;
-            background: #f4f6f8;
-        }
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+>
 
-        h1 {
-            text-align: center;
-        }
-
-        form {
-            background: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-        }
-
-        input,
-        select,
-        button {
-            padding: 10px;
-            margin: 5px;
-        }
-
-        button {
-            cursor: pointer;
-        }
-
-        .task {
-            background: white;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 10px;
-        }
-
-        .delete {
-            background: #dc3545;
-            color: white;
-            border: none;
-        }
-
-        .update {
-            background: #007bff;
-            color: white;
-            border: none;
-        }
-    </style>
 </head>
 
 <body>
 
-    <h1>📚 Smart Study Planner</h1>
+<div class="container">
 
-    <a href="/dashboard">
-        <button>📊 Dashboard</button>
-    </a>
+<!-- Header -->
 
-    <a href="/plan">
-        <button>🧠 Smart Study Plan</button>
-    </a>
+<header>
+
+    <div>
+        <h1>📚 Smart Study Planner</h1>
+        <p>Organize your studies. Stay on track. Reach your goals.</p>
+    </div>
+
+    <nav>
+
+        <a href="/dashboard">
+            <button class="primary">
+                📊 Dashboard
+            </button>
+        </a>
+
+        <a href="/plan">
+            <button class="primary">
+                🧠 Smart Plan
+            </button>
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- Add Task -->
+
+<div class="card">
+
+    <h2>➕ Add Study Task</h2>
 
     <form method="POST" action="/add">
 
-        <h2>Add Study Task</h2>
+        <input
+            type="text"
+            name="title"
+            placeholder="Task title"
+            required
+        >
 
-        <input type="text" name="title" placeholder="Task title" required>
-
-        <input type="text" name="subject" placeholder="Subject" required>
+        <input
+            type="text"
+            name="subject"
+            placeholder="Subject"
+            required
+        >
 
         <select name="difficulty">
+
             <option value="Easy">Easy</option>
             <option value="Medium">Medium</option>
             <option value="Hard">Hard</option>
+
         </select>
 
         <input
             type="number"
             name="estimated_hours"
-            placeholder="Hours"
+            placeholder="Study hours"
             step="0.5"
             min="0.5"
             required
         >
 
-        <input type="date" name="deadline" required>
+        <input
+            type="date"
+            name="deadline"
+            required
+        >
 
         <select name="priority">
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
+
+            <option value="Low">Low Priority</option>
+            <option value="Medium">Medium Priority</option>
+            <option value="High">High Priority</option>
+
         </select>
 
-        <button type="submit">Add Task</button>
+        <button
+            class="primary"
+            type="submit"
+        >
+            Add Task
+        </button>
 
     </form>
 
+</div>
 
-    <h2>My Study Tasks</h2>
 
+<!-- Tasks -->
+
+<div class="section-header">
+
+    <h2>📋 My Study Tasks</h2>
+
+    <span>
+        {{ tasks|length }} task{% if tasks|length != 1 %}s{% endif %}
+    </span>
+
+</div>
+
+
+<div class="task-grid">
 
     {% if tasks %}
 
         {% for task in tasks %}
 
-            <div class="task">
+            <div class="task {% if task[7] %}completed{% endif %}">
 
-                <h3>{{ task[1] }}</h3>
+                <!-- Task Header -->
 
-                <p><strong>Subject:</strong> {{ task[2] }}</p>
+                <div class="task-header">
 
-                <p><strong>Difficulty:</strong> {{ task[3] }}</p>
+                    <div>
 
-                <p><strong>Estimated Hours:</strong> {{ task[4] }}</p>
+                        <h3>{{ task[1] }}</h3>
 
-                <p><strong>Deadline:</strong> {{ task[5] }}</p>
+                        <span class="subject">
+                            {{ task[2] }}
+                        </span>
 
-                <p><strong>Priority:</strong> {{ task[6] }}</p>
-
-                <p>
-                    <strong>Status:</strong>
+                    </div>
 
                     {% if task[7] %}
-                        ✅ Completed
+
+                        <span class="status completed-status">
+                            ✓ Completed
+                        </span>
+
                     {% else %}
-                        ⏳ Pending
+
+                        <span class="status pending-status">
+                            ⏳ Pending
+                        </span>
+
                     {% endif %}
-                </p>
 
-                <a href="/toggle/{{ task[0] }}">
-                    <button>
-                        {% if task[7] %}
-                            Mark as Pending
-                        {% else %}
-                            Mark as Completed
-                        {% endif %}
+                </div>
+
+
+                <!-- Task Information -->
+
+                <div class="task-info">
+
+                    <div>
+                        <span>Difficulty</span>
+                        <strong>{{ task[3] }}</strong>
+                    </div>
+
+                    <div>
+                        <span>Study Time</span>
+                        <strong>{{ task[4] }} hrs</strong>
+                    </div>
+
+                    <div>
+                        <span>Deadline</span>
+                        <strong>{{ task[5] }}</strong>
+                    </div>
+
+                    <div>
+                        <span>Priority</span>
+                        <strong>{{ task[6] }}</strong>
+                    </div>
+
+                </div>
+
+
+                <!-- Actions -->
+
+                <div class="actions">
+
+                    <a href="/toggle/{{ task[0] }}">
+
+                        <button class="success">
+
+                            {% if task[7] %}
+                                Mark Pending
+                            {% else %}
+                                ✓ Complete
+                            {% endif %}
+
+                        </button>
+
+                    </a>
+
+
+                    <button
+                        class="update"
+                        onclick="toggleEdit('{{ task[0] }}')"
+                    >
+                        ✏️ Edit
                     </button>
-                </a>
 
 
-                <form
-                    method="POST"
-                    action="/update/{{ task[0] }}"
+                    <a href="/delete/{{ task[0] }}">
+
+                        <button class="danger">
+                            🗑 Delete
+                        </button>
+
+                    </a>
+
+                </div>
+
+
+                <!-- Edit Form -->
+
+                <div
+                    id="edit-{{ task[0] }}"
+                    class="edit-form"
+                    style="display: none;"
                 >
 
-                    <input
-                        type="text"
-                        name="title"
-                        value="{{ task[1] }}"
-                        required
+                    <form
+                        method="POST"
+                        action="/update/{{ task[0] }}"
                     >
 
-                    <input
-                        type="text"
-                        name="subject"
-                        value="{{ task[2] }}"
-                        required
-                    >
-
-                    <select name="difficulty">
-
-                        <option
-                            value="Easy"
-                            {% if task[3] == "Easy" %}selected{% endif %}
+                        <input
+                            type="text"
+                            name="title"
+                            value="{{ task[1] }}"
+                            required
                         >
-                            Easy
-                        </option>
 
-                        <option
-                            value="Medium"
-                            {% if task[3] == "Medium" %}selected{% endif %}
+                        <input
+                            type="text"
+                            name="subject"
+                            value="{{ task[2] }}"
+                            required
                         >
-                            Medium
-                        </option>
 
-                        <option
-                            value="Hard"
-                            {% if task[3] == "Hard" %}selected{% endif %}
+                        <select name="difficulty">
+
+                            <option
+                                value="Easy"
+                                {% if task[3] == "Easy" %}selected{% endif %}
+                            >
+                                Easy
+                            </option>
+
+                            <option
+                                value="Medium"
+                                {% if task[3] == "Medium" %}selected{% endif %}
+                            >
+                                Medium
+                            </option>
+
+                            <option
+                                value="Hard"
+                                {% if task[3] == "Hard" %}selected{% endif %}
+                            >
+                                Hard
+                            </option>
+
+                        </select>
+
+                        <input
+                            type="number"
+                            name="estimated_hours"
+                            value="{{ task[4] }}"
+                            step="0.5"
+                            min="0.5"
+                            required
                         >
-                            Hard
-                        </option>
 
-                    </select>
-
-                    <input
-                        type="number"
-                        name="estimated_hours"
-                        value="{{ task[4] }}"
-                        step="0.5"
-                        min="0.5"
-                        required
-                    >
-
-                    <input
-                        type="date"
-                        name="deadline"
-                        value="{{ task[5] }}"
-                        required
-                    >
-
-                    <select name="priority">
-
-                        <option
-                            value="Low"
-                            {% if task[6] == "Low" %}selected{% endif %}
+                        <input
+                            type="date"
+                            name="deadline"
+                            value="{{ task[5] }}"
+                            required
                         >
-                            Low
-                        </option>
 
-                        <option
-                            value="Medium"
-                            {% if task[6] == "Medium" %}selected{% endif %}
+                        <select name="priority">
+
+                            <option
+                                value="Low"
+                                {% if task[6] == "Low" %}selected{% endif %}
+                            >
+                                Low
+                            </option>
+
+                            <option
+                                value="Medium"
+                                {% if task[6] == "Medium" %}selected{% endif %}
+                            >
+                                Medium
+                            </option>
+
+                            <option
+                                value="High"
+                                {% if task[6] == "High" %}selected{% endif %}
+                            >
+                                High
+                            </option>
+
+                        </select>
+
+                        <button
+                            class="update"
+                            type="submit"
                         >
-                            Medium
-                        </option>
+                            Save Changes
+                        </button>
 
-                        <option
-                            value="High"
-                            {% if task[6] == "High" %}selected{% endif %}
-                        >
-                            High
-                        </option>
+                    </form>
 
-                    </select>
-
-                    <button class="update" type="submit">
-                        Update
-                    </button>
-
-                </form>
-
-
-                <a href="/delete/{{ task[0] }}">
-                    <button class="delete">
-                        Delete
-                    </button>
-                </a>
+                </div>
 
             </div>
 
@@ -253,9 +339,44 @@
 
     {% else %}
 
-        <p>No study tasks yet.</p>
+        <div class="card empty">
+
+            <h3>No study tasks yet 📚</h3>
+
+            <p>
+                Add your first study task above to get started.
+            </p>
+
+        </div>
 
     {% endif %}
+
+</div>
+```
+
+</div>
+
+<!-- Edit Toggle -->
+
+<script>
+
+function toggleEdit(taskId) {
+
+    const form = document.getElementById("edit-" + taskId);
+
+    if (form.style.display === "none") {
+
+        form.style.display = "block";
+
+    } else {
+
+        form.style.display = "none";
+
+    }
+
+}
+
+</script>
 
 </body>
 
