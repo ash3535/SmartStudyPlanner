@@ -14,10 +14,7 @@ load_dotenv()
 
 app = Flask(__name__)
 
-app.secret_key = os.getenv(
-    "SECRET_KEY",
-    "smart-study-planner-secret-key"
-)
+app.secret_key = os.getenv("SECRET_KEY")
 
 manager = TaskManager()
 user_manager = UserManager()
@@ -31,6 +28,9 @@ def login_required():
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
+
+    if "user_id" in session:
+        return redirect("/")
 
     if request.method == "GET":
         return render_template("signup.html")
@@ -73,6 +73,9 @@ def signup():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+
+    if "user_id" in session:
+        return redirect("/")
 
     if request.method == "GET":
         return render_template("login.html")

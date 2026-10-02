@@ -19,12 +19,15 @@
 <body>
 
 <div class="container">
-    
+
 <header>
 
     <div>
         <h1>📊 Study Dashboard</h1>
-        <p>Track your study progress at a glance.</p>
+        <p>
+            Track your study progress at a glance.
+            Welcome, <strong>{{ session["username"] }}</strong>!
+        </p>
     </div>
 
     <nav>
@@ -39,6 +42,13 @@
                 🧠 Smart Plan
             </button>
         </a>
+
+        <a href="/logout">
+            <button class="danger">
+                🔓 Logout
+            </button>
+        </a>
+
     </nav>
 
 </header>
