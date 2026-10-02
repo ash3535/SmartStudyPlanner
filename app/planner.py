@@ -2,7 +2,20 @@ from datetime import date
 
 
 def calculate_score(task):
-    task_id, title, subject, difficulty, hours, deadline, priority = task
+    (
+        task_id,
+        title,
+        subject,
+        difficulty,
+        hours,
+        deadline,
+        priority,
+        completed
+    ) = task
+
+    # Completed tasks should not be prioritized
+    if completed:
+        return -1
 
     today = date.today()
     days_left = (deadline - today).days
@@ -35,7 +48,7 @@ def calculate_score(task):
 
     difficulty_score = difficulty_scores.get(difficulty, 2)
 
-    # Longer tasks get slightly higher priority
+    # More study time = slightly higher priority
     hours_score = min(float(hours), 10)
 
     total_score = (
@@ -49,8 +62,14 @@ def calculate_score(task):
 
 
 def create_study_plan(tasks):
+
+    pending_tasks = [
+        task for task in tasks
+        if not task[7]
+    ]
+
     return sorted(
-        tasks,
+        pending_tasks,
         key=calculate_score,
         reverse=True
     )
