@@ -33,7 +33,7 @@ class TaskManager:
 
         cursor.execute("""
             SELECT id, title, subject, difficulty,
-                   estimated_hours, deadline, priority
+                estimated_hours, deadline, priority, completed
             FROM study_tasks
             ORDER BY id
         """)
@@ -97,3 +97,23 @@ class TaskManager:
 
         cursor.close()
         connection.close()
+
+    def get_statistics(self):
+        connection = get_connection()
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            SELECT
+                COUNT(*),
+                COALESCE(SUM(estimated_hours), 0),
+                COUNT(*) FILTER (WHERE priority = 'High'),
+                COUNT(*) FILTER (WHERE completed = TRUE)
+            FROM study_tasks
+        """)
+
+        statistics = cursor.fetchone()
+
+        cursor.close()
+        connection.close()
+
+        return statistics

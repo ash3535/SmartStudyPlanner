@@ -83,5 +83,14 @@ def study_plan():
         tasks=planned_tasks
     )
 
+@app.route("/dashboard")
+def dashboard():
+    statistics = manager.get_statistics()
+
+    return render_template(
+        "dashboard.html",
+        statistics=statistics
+    )
+
 if __name__ == "__main__":
     app.run(debug=True)
