@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect
 
 from models import StudyTask
 from task_manager import TaskManager
+from planner import create_study_plan
 
 
 app = Flask(__name__)
@@ -70,6 +71,17 @@ def delete_task(task_id):
     manager.delete_task(task_id)
 
     return redirect("/")
+
+@app.route("/plan")
+def study_plan():
+    tasks = manager.get_tasks()
+
+    planned_tasks = create_study_plan(tasks)
+
+    return render_template(
+        "plan.html",
+        tasks=planned_tasks
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)
